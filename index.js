@@ -24,9 +24,35 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+console.log(new Date('1970-01-01T00:00:00.123Z'));
+console.log(new Date('2000-01-01T00:00:00.123Z'));
+console.log(Number(new Date('2500-01-01T00:00:00.123Z')));
+console.log(new Date('250-01-01T00:00:00.123Z') === 'Invalid Date');
 
+// date
+app.get('/api/:date?', function (req, res) {
+  const { date } = req.params;
+  if (new Date(date) != 'Invalid Date') {
+    res.json({
+      unix: Number(date),
+      utc: date
+    })
+  }
+  // if date is empty
+  else if (!date) {
+    const currentDate = new Date();
+    res.json({
+      unix: currentDate.getTime(),
+      utc: currentDate
+    })
+  }
+  res.json({
+    date
+  })
+})
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+// process.env.PORT replaced by 5000
+var listener = app.listen(5000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
